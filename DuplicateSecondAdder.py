@@ -1,7 +1,7 @@
 # INPUT VARIABLES----------------------------------------------------------------------------------------
 #region
 # Directory folder of the csv files you want to process
-Input_path = 'C:/Users/whittlej/Programs/WPy-3702/notebooks/data_Input.csv'
+Input_path = 'C:/Users/whittlej/Programs/WPy-3702/notebooks/DRINKING_WATER_HISTORIC-From-Hansen-DB.csv'
 # Can change to xlsx if needed, other changes will be nessesary to code
 
 # Csv files seperator for input and output files..generally (,) or (|)
@@ -102,6 +102,8 @@ for key in Lst_Duplicate_Keys:
         second = int(second)
         if second > 58:
             print('ERROR - Input second of 59!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            print('OUTPUT DATA WILL HAVE A SECOND OF > 60')
+            print(key)
         second = second + counter
         
         second = str(second)
@@ -121,6 +123,3 @@ for key in Lst_Duplicate_Keys:
 # Create Output file for data with only intersection
 df_file.to_csv(path_or_buf=Output_path, sep=Delimiter, index=False)
 print('-------END-------------')
-
-
-
