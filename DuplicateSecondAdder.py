@@ -42,7 +42,7 @@ print('Reading Dataframe...')
 df_file = pd.read_csv(Input_path, engine = 'c', sep = Delimiter, dtype=object)
 print('Created Dataframe.')
 # Delete Rows with everything missing in the row
-df_file = df_file.dropna(axis='index', how='all')
+#df_file.dropna(axis='index', how='all', inplace=True)
 print('Removed any blank rows.')
 #endregion
 
@@ -59,22 +59,26 @@ for index, row in df_file.iterrows():
     Str_Row = str('')
     for item in Lst_Columns:
         Str_Row = Str_Row + row[item]
-        print(Str_Row)
     Lst_Row_Key.append(Str_Row)
 print('Created list of Keys')
 print('Example Row Key from firt Row:', Lst_Row_Key[0])
 
-print('Doing Stuff...')
+
 # Create Array of Rows from List of Rows
+print('Creating Array of keys from list...')
 Array_Raw_Items_Results = np.array(Lst_Row_Key)
+print('Array creation complete.')
 
 # Create a dictionary of Row Strings to number of Duplicates
+print('Creating Dictionary of KEYS:COUNTS...')
 unique, counts = np.unique(Array_Raw_Items_Results, return_counts=True)
 Dict_Unique_Counts = dict(zip(unique, counts))
+print('Dictionary created.')
 
 #Create a list of keys for Duplicates only
+print('creating a dictionary of duplicates only...')
 Lst_Duplicate_Keys = ([key for key, val in Dict_Unique_Counts.items() if val > 1])
-print('Finished doing stuff.')
+print('Finished creating duplicate dictionary.')
 #endregion
 
 
@@ -82,13 +86,13 @@ print('Finished doing stuff.')
 # For each key find the indexes where they exist
 # and then edit the duplicates by adding 1 second (leaving the first one)
 # Note: assuming date time ends with last two characters representing the seconds
-print('Editing Data...')
+print('Editing Data in dataframe...')
 #region
 Lst_Row_Index_Duplicates = []
 for key in Lst_Duplicate_Keys:
     # Get the row index's of the duplicate Key
     Lst_Indexes = [i for i, j in enumerate(Lst_Row_Key) if j == key]
-    print('Duplicates')
+    print('Duplicates at indexes:')
     print(Lst_Indexes)
     
     # Append the row index's to a list
@@ -107,9 +111,12 @@ for key in Lst_Duplicate_Keys:
         
         second = int(second)
         if second > 58:
+            print('-------------------------------------------------------------')
             print('ERROR - Input second of 59!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             print('OUTPUT DATA WILL HAVE A SECOND OF > 60')
+            print('This is the key with the issue:')
             print(key)
+            print('-------------------------------------------------------------')
         second = second + counter
         
         second = str(second)
@@ -122,10 +129,12 @@ for key in Lst_Duplicate_Keys:
         df_file.loc[indexval, DTime] = newcellval
 
         counter += 1
-print('Finished editing data.')
+print('Finished editing data in dataframe.')
 #endregion
 
 print('Creating the csv file...')
+print(Output_path)
 # Create Output file for data with only intersection
 df_file.to_csv(path_or_buf=Output_path, sep=Delimiter, index=False)
+print('File created.')
 print('-------END-------------')
