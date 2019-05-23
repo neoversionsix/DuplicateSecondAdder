@@ -79,7 +79,7 @@ print('----------------------------------------------------------')
 print('-------------CREATING KEYS----------------------------------')
 # Create List of Keys
 Lst_Row_Key = []
-print('Creating Keys to compare...')
+print('Creating Keys to compare, this may take some time...')
 for index, row in df_Dups_Only.iterrows():
     Str_Row = str('')
     for item in Lst_Columns:
